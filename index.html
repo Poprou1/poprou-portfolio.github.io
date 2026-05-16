@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="icon" type="image/x-icon" href="Goat!.jpg">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POPROU | Creative Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #000000; }
+        html { scroll-behavior: smooth; }
+		
+		@keyframes fadeInUp {
+			from { opacity: 0; transform: translateY(40px); }
+			to { opacity: 1; transform: translateY(0); }
+		}
+
+		@keyframes slideInRight {
+			from { 
+				opacity: 0; 
+				/* Start slightly further right, but keep the vertical position locked */
+				transform: translateX(100px) scaleX(-1.5) scaleY(1.5); 
+			}
+			to { 
+				opacity: 1; 
+				transform: translateX(0) scaleX(-1.5) scaleY(1.5); 
+			}
+		}
+
+		@keyframes kenBurns {
+			from { transform: scale(1); }
+			to { transform: scale(1.1); }
+		}
+
+		.reveal { animation: fadeInUp 1s cubic-bezier(0.22, 1, 0.36, 1) forwards; opacity: 0; }
+		.delay-1 { animation-delay: 0.2s; }
+		.delay-2 { animation-delay: 0.4s; }
+		
+		.slide-in-left {
+			opacity: 0;
+			transform: translateX(-50px);
+			transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+		}
+
+		.slide-in-right {
+			opacity: 0;
+			transform: translateX(50px);
+			transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+		}
+
+		.slide-in-left.show, .slide-in-right.show {
+			opacity: 1;
+			transform: translateX(0);
+		}
+		
+		.reveal-column {
+			opacity: 0;
+			transform: translateY(50px);
+			transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+		}
+
+		.reveal-column.show {
+			opacity: 1;
+			transform: translateY(0);
+		}
+
+		.delay-col-1 { transition-delay: 0.1s; }
+		.delay-col-2 { transition-delay: 0.2s; }
+		.delay-col-3 { transition-delay: 0.3s; }
+		.delay-col-4 { transition-delay: 0.4s; }
+		.delay-col-5 { transition-delay: 0.5s; }
+		
+		.slide-curtain-left {
+			transform: translateX(-100%);
+			transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+		}
+		.slide-curtain-right {
+			transform: translateX(100%);
+			transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+		}
+
+		.scale-up-center {
+			opacity: 0;
+			transform: scale(0.8);
+			transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+		}
+
+		.slide-curtain-left.show, 
+		.slide-curtain-right.show {
+			transform: translateX(0);
+		}
+		
+		.scale-up-center.show {
+			opacity: 1;
+			transform: scale(1);
+		}
+		
+		@keyframes slowPan {
+			from { transform: scale(1.0) translateX(0); }
+			to { transform: scale(1.1) translateX(-20px); }
+		}
+
+		.reveal-footer {
+			opacity: 0;
+			transform: translateY(30px);
+			transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+		}
+
+		.reveal-footer.show {
+			opacity: 1;
+			transform: translateY(0);
+		}
+		
+		body.transitioning {
+			overflow: hidden;
+		}
+
+		#page-transition.is-active {
+			transform: translateY(0);
+		}
+
+		#page-transition.is-hidden {
+			transform: translateY(-100%);
+		}
+		
+		#sound-toggle.muted {
+			opacity: 0.5;
+			background-color: #4a2c1d; 
+		}
+
+		#sound-toggle.muted svg {
+			stroke: #ffffff;
+		}
+		
+		@keyframes bounceIn {
+			0% { transform: translateY(100px); opacity: 0; }
+			60% { transform: translateY(-10px); opacity: 1; }
+			100% { transform: translateY(0); }
+		}
+
+		.animate-bounce-in {
+			animation: bounceIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+		}
+	</style>
+</head>
+
+<div id="page-transition" class="fixed inset-0 z-[100] bg-[#4a2c1d] transition-transform duration-700 ease-in-out translate-y-0">
+    <div class="flex items-center justify-center h-full">
+        <h2 class="text-white text-2xl font-black tracking-tighter uppercase">Poprou</h2>
+    </div>
+</div>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const transitionEl = document.getElementById('page-transition');
+        
+        setTimeout(() => {
+            transitionEl.classList.add('is-hidden');
+        }, 100);
+
+        const links = document.querySelectorAll('a');
+        links.forEach(link => {
+            if (link.hostname === window.location.hostname && !link.hash && link.target !== "_blank") {
+                link.addEventListener('click', e => {
+                    e.preventDefault();
+                    let target = link.href;
+
+                    transitionEl.classList.remove('is-hidden');
+                    
+                    setTimeout(() => {
+                        window.location.href = target;
+                    }, 700);
+                });
+            }
+        });
+    });
+</script>
+
+<body class="overflow-x-hidden">
+
+<nav class="flex justify-between items-center px-10 py-6 sticky top-0 bg-white/90 backdrop-blur-md z-50 border-b border-gray-100">
+    
+    <a href="index.html" class="group">
+        <div class="text-2xl font-black tracking-tighter leading-none transition-all group-hover:opacity-60">
+            POP<br>ROU
+        </div>
+    </a>
+
+    <div class="hidden md:flex space-x-8 font-medium text-sm uppercase tracking-widest">
+        <a href="index.html" class="border-b-2 border-black pb-1 text-black">Home</a>
+        <a href="about.html" class="hover:text-gray-500 transition-all text-black">About Me</a>
+        <a href="portfolio.html" class="hover:text-gray-500 transition-all text-black">Portfolio</a>
+        <a href="services.html" class="hover:text-gray-500 transition-all text-black">Services</a>
+        <a href="contact.html" class="hover:text-gray-500 transition-all text-black">Contact</a>
+    </div>
+
+		<a href="https://mail.google.com/mail/?view=cm&fs=1&to=poprou1122@gmail.com" 
+		   target="_blank"
+		   class="bg-[#4a2c1d] text-white px-6 py-2 rounded-full font-bold uppercase tracking-widest text-xs hover:bg-[#5d3a28] transition-colors">
+			Commission Me!
+		</a>
+</nav>
+
+<section class="relative min-h-[70vh] flex flex-col justify-end bg-white overflow-hidden">
+    
+    <div class="absolute inset-0 z-0">
+        <div class="absolute inset-0 bg-cover bg-center opacity-65" 
+             style="background-image: url('Lovesick 1.jpg'); animation: kenBurns 20s infinite alternate ease-in-out;">
+        </div>
+    </div>
+
+    <div class="relative z-10 px-10 md:px-20 pt-20 pb-0 max-w-7xl w-full">
+        <h1 class="text-7xl md:text-9xl font-black tracking-tighter text-white mb-6 drop-shadow-md reveal">
+            POPROU
+        </h1>
+        <p class="text-lg md:text-xl text-white leading-relaxed font-medium max-w-2xl mb-12 drop-shadow-sm reveal delay-1">
+            I am Poprou, a Filipino digital illustrator who blends contemporary digital art with Filipino culture, mythology, and identity. My work focuses on reimagining local narratives through bold compositions and expressive visual storytelling, creating pieces that feel both modern and deeply rooted in tradition.
+        </p>
+    </div>
+
+    <div class="relative z-10 bg-white w-full py-8 px-10 md:px-20 border-t border-gray-100 reveal delay-2">
+        <div class="max-w-7xl">
+            <a href="about.html" class="text-xl font-bold text-[#4a2c1d] border-b-2 border-[#4a2c1d] pb-1 hover:opacity-70 hover:pl-4 transition-all duration-300 inline-block">
+                Get to know more about me!
+            </a>
+        </div>
+    </div>
+
+	<div class="hidden lg:block absolute right-[250px] z-[30] cursor-pointer"
+		 onclick="characterSpeak()"
+		 style="bottom: -150px; animation: slideInRight 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards; opacity: 0; animation-delay: 0.6s;">
+		 
+		<div id="speech-bubble" 
+			 class="absolute top-[40px] right-[90px] z-40 bg-white text-black px-6 py-8 rounded-[50%] shadow-xl opacity-0 transition-all duration-300 pointer-events-none w-[200px] h-[180px] flex items-center justify-center text-center font-bold border-2 border-[#4a2c1d] leading-tight text-sm"
+			 style="transform: scaleX(-1);">
+		   
+		   <span id="speech-text"></span>
+			<div class="absolute top-1/2 -right-2 -translate-y-1/2 w-4 h-4 bg-white border-t-2 border-r-2 border-[#4a2c1d] rotate-45"></div>
+		</div>
+		 
+		 <img src="Character Art.webp" alt="Character Art" 
+			  class="h-[550px] object-contain object-bottom origin-bottom drop-shadow-[-15px_15px_0px_rgba(0,0,0,0.3)] transition-transform duration-500 hover:translate-y-[-10px]">
+	</div>
+</section>
+
+<script>
+    const dialogues = [
+        "Welcome to my corner!",
+        "Need some art? I'm your guy.",
+        "Meh~",
+        "Enjoy your stay!",
+        ">:3",
+        "Check out my portfolio!",
+        "Drawn with love and a lot of coffee...",
+        "Is it lunchtime yet?",
+        "Bah!",
+        "Thanks for stopping by!"
+    ];
+
+    let canSpeak = true;
+
+	function characterSpeak() {
+		if (!canSpeak) return;
+
+		const bubble = document.getElementById('speech-bubble');
+		const text = document.getElementById('speech-text');
+		
+		text.innerText = dialogues[Math.floor(Math.random() * dialogues.length)];
+		
+		bubble.classList.remove('opacity-0');
+		bubble.classList.add('opacity-100');
+
+		canSpeak = false;
+
+		setTimeout(() => {
+			bubble.classList.add('opacity-0');
+			bubble.classList.remove('opacity-100');
+		}, 3000);
+
+		setTimeout(() => {
+			canSpeak = true;
+		}, 3300);
+	}
+</script>
+	
+<section class="bg-black text-white px-10 md:px-20 py-24 overflow-hidden">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 md:gap-20">
+        
+        <div class="w-full md:w-1/2 flex flex-col slide-in-left">
+            <div class="flex gap-4 h-[500px] md:h-[600px] group/main">
+                <a href="services.html#reference" onmouseover="updateHomeService(0)" 
+                   class="relative flex-1 h-full overflow-hidden rounded-sm transition-all duration-500 hover:flex-[1.5] group-hover/main:opacity-40 hover:!opacity-100 border border-white/10">
+                    <img src="Thana - Isometric View (Y2K).jpg" class="w-full h-full object-cover">
+                </a>
+
+                <a href="services.html#digital" onmouseover="updateHomeService(1)" 
+                   class="relative flex-1 h-full overflow-hidden rounded-sm transition-all duration-500 hover:flex-[1.5] group-hover/main:opacity-40 hover:!opacity-100 border border-white/10">
+                    <img src="Commission for Lavi (Final 2).jpg" class="w-full h-full object-cover">
+                </a>
+
+                <a href="services.html#comic" onmouseover="updateHomeService(2)" 
+                   class="relative flex-1 h-full overflow-hidden rounded-sm transition-all duration-500 hover:flex-[1.5] group-hover/main:opacity-40 hover:!opacity-100 border border-white/10">
+                    <img src="No Shortcuts! Chapter 1 Page 10 (Rendered).jpg" class="w-full h-full object-cover">
+                </a>
+            </div>
+        </div>
+
+        <div class="w-full md:w-1/2 text-center flex flex-col items-center justify-center min-h-[400px] slide-in-right">
+            
+            <a href="services.html" class="group/title inline-block mb-16">
+                <h2 class="text-6xl md:text-7xl font-black tracking-tighter text-white uppercase leading-none border-b-4 border-white pb-2 transition-colors hover:text-gray-400 hover:border-gray-400">
+                    SERVICES
+                </h2>
+            </a>
+
+            <div class="min-h-[120px] flex items-center justify-center">
+                <h3 id="homeServiceTitle" class="text-5xl md:text-7xl font-black tracking-tighter uppercase leading-none transition-all duration-300">
+                    DIGITAL ILLUSTRATION
+                </h3>
+            </div>
+            
+            <p class="text-gray-500 text-xs tracking-[0.2em] mt-8 uppercase">Click to view details</p>
+        </div>
+    </div>
+</section>
+
+<script>
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.slide-in-left, .slide-in-right').forEach(el => observer.observe(el));
+
+    const homeTitles = ["CHARACTER REFERENCE SHEET", "DIGITAL ILLUSTRATION", "COMIC ILLUSTRATION"];
+    function updateHomeService(index) {
+        const titleEl = document.getElementById('homeServiceTitle');
+        
+        titleEl.style.opacity = '0';
+        titleEl.style.transform = 'translateY(10px)';
+        
+        setTimeout(() => {
+            titleEl.innerText = homeTitles[index];
+            titleEl.style.opacity = '1';
+            titleEl.style.transform = 'translateY(0)';
+        }, 150);
+    }
+</script>
+	
+<section class="bg-white py-24 px-10 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto text-center mb-16 relative z-20">
+        <div class="inline-block relative">
+            <h2 id="work-heading" class="slide-in-left text-6xl md:text-7xl font-black tracking-tighter text-black uppercase inline-block pb-1">
+                WORK EXAMPLES
+            </h2>
+            <svg class="absolute -bottom-6 left-0 w-full h-12 pointer-events-none" viewBox="0 0 500 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path id="work-scribble" d="M10 30C80 25 180 15 280 25C380 35 460 25 490 20C420 28 320 38 220 28C120 18 40 22 10 30" 
+                      stroke="#4a2c1d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"
+                      style="stroke-dasharray: 1200; stroke-dashoffset: 1200; transition: stroke-dashoffset 1.5s cubic-bezier(0.22, 1, 0.36, 1);"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="marquee-wrapper relative">
+        <style>
+            .marquee-container { overflow: hidden; cursor: grab; user-select: none; white-space: nowrap; padding: 15px 0; }
+            .marquee-container:active { cursor: grabbing; }
+            .marquee-content { display: inline-flex; gap: 20px; will-change: transform; }
+            .marquee-item { flex-shrink: 0; width: 320px; height: 220px; border-radius: 4px; overflow: hidden; border: 1px solid #f3f4f6; }
+            .marquee-item img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+            
+            .marquee-gradient-bottom {
+                position: absolute; bottom: -20px; left: 0; right: 0; height: 400px;
+                background: linear-gradient(to top, white 35%, transparent);
+                pointer-events: none; z-index: 10;
+            }
+        </style>
+
+        <div class="marquee-container" data-speed="1" data-dir="-1">
+            <div class="marquee-content">
+                <div class="marquee-item"><img src="Running.jpg"></div>
+                <div class="marquee-item"><img src="Sarangay Things!.jpg"></div>
+                <div class="marquee-item"><img src="Commission for Lavi (Final 2).jpg"></div>
+                <div class="marquee-item"><img src="BDay Gift for Bradley!.jpg"></div>
+                <div class="marquee-item"><img src="Dancin'!.jpg"></div>
+            </div>
+        </div>
+
+        <div class="marquee-container" data-speed="1.2" data-dir="1">
+            <div class="marquee-content">
+                <div class="marquee-item"><img src="For Socmed Teaser.jpg"></div>
+                <div class="marquee-item"><img src="Stuck....jpg"></div>
+                <div class="marquee-item"><img src="ARKS - Valentine's Day! 2.jpg"></div>
+                <div class="marquee-item"><img src="Lovesick 1.jpg"></div>
+                <div class="marquee-item"><img src="Cleans Only!.jpg"></div>
+            </div>
+        </div>
+
+        <div class="marquee-container" data-speed="0.7" data-dir="-1">
+            <div class="marquee-content">
+                <div class="marquee-item"><img src="Thana - Isometric View (Y2K).jpg"></div>
+                <div class="marquee-item"><img src="Ignited Fire!.jpg"></div>
+                <div class="marquee-item"><img src="No Shortcuts! Chapter 1 Page 10 (Rendered).jpg"></div>
+                <div class="marquee-item"><img src="Zesty-a!.jpg"></div>
+                <div class="marquee-item"><img src="Lovesick 1.jpg"></div>
+            </div>
+        </div>
+
+        <div class="marquee-gradient-bottom"></div>
+    </div>
+
+    <div class="flex flex-col items-center gap-3 relative z-20">
+        <a id="view-more-link" href="portfolio.html" class="reveal-column text-5xl font-black text-[#4a2c1d] uppercase border-b-4 border-[#4a2c1d] pb-1 hover:text-black hover:border-black transition-colors">
+            VIEW MORE
+        </a>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const textElements = [document.getElementById('work-heading'), document.getElementById('view-more-link')];
+        const scribble = document.getElementById('work-scribble');
+
+        const workObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                    if (entry.target.id === 'work-heading') {
+                        scribble.style.strokeDashoffset = '0';
+                    }
+                }
+            });
+        }, { threshold: 0.2 });
+
+        textElements.forEach(el => { if(el) workObserver.observe(el); });
+
+        const marquees = document.querySelectorAll('.marquee-container');
+        
+        marquees.forEach(container => {
+            const content = container.querySelector('.marquee-content');
+            
+            const items = [...content.children];
+            items.forEach(item => {
+                const clone = item.cloneNode(true);
+                content.appendChild(clone);
+            });
+
+            let xPos = 0;
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+            let isPaused = false;
+            let dashSpeed = 0;
+            
+            const baseSpeed = parseFloat(container.dataset.speed);
+            const direction = parseInt(container.dataset.dir);
+
+            function updatePosition(newX) {
+                const halfWidth = content.scrollWidth / 2;
+                if (newX <= -halfWidth) newX += halfWidth;
+                if (newX >= 0) newX -= halfWidth;
+                return newX;
+            }
+
+            function animate() {
+                if (!isPaused && !isDown) {
+                    xPos += (baseSpeed + dashSpeed) * direction;
+                    xPos = updatePosition(xPos);
+                    content.style.transform = `translateX(${xPos}px)`;
+                }
+                if (dashSpeed > 0) dashSpeed *= 0.95;
+                requestAnimationFrame(animate);
+            }
+            
+            if (direction === 1) xPos = -content.scrollWidth / 2;
+            animate();
+
+            container.addEventListener('mouseenter', () => { isPaused = true; if(window.playHoverSound) playHoverSound(); });
+            container.addEventListener('mouseleave', () => { isPaused = false; });
+            
+            container.addEventListener('click', () => {
+                dashSpeed = 30;
+                if(window.playClickSound) playClickSound();
+            });
+
+            container.addEventListener('mousedown', (e) => {
+                isDown = true;
+                startX = e.pageX - container.offsetLeft;
+                scrollLeft = xPos;
+            });
+
+            window.addEventListener('mouseup', () => { isDown = false; });
+            
+            window.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - container.offsetLeft;
+                const walk = (x - startX) * 1.5;
+                
+                xPos = updatePosition(scrollLeft + walk);
+                content.style.transform = `translateX(${xPos}px)`;
+                
+                if (Math.abs(walk) > 10 && window.playTone) {
+                    playTone(150 + Math.abs(walk), 'sine', 0.05, 0.03);
+                }
+            });
+        });
+    });
+</script>
+	
+<section class="relative bg-white min-h-screen flex items-center justify-center overflow-hidden border-t border-gray-100">
+    
+    <div class="absolute inset-0 flex justify-between pointer-events-none">
+        
+        <div class="relative w-1/3 h-full opacity-30 slide-curtain-left">
+            <img src="Stuck....jpg" class="w-full h-full object-cover object-left">
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-white"></div>
+        </div>
+
+        <div class="relative w-1/3 h-full opacity-30 slide-curtain-right">
+            <img src="Commission for Lavi (Final 2).jpg" class="w-full h-full object-cover object-right">
+            <div class="absolute inset-0 bg-gradient-to-l from-transparent via-white/40 to-white"></div>
+        </div>
+    </div>
+
+    <div class="relative z-10 max-w-5xl mx-auto text-center px-6 scale-up-center">
+        <h2 class="text-6xl md:text-8xl font-black tracking-tighter text-[#4a2c1d] leading-[0.9] uppercase mb-12">
+            READY TO WORK<br>TOGETHER?
+        </h2>
+        
+        <div class="flex justify-center">
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=poprou1122@gmail.com" 
+               target="_blank"
+               class="bg-[#4a2c1d] text-white text-3xl md:text-4xl font-black px-16 py-7 rounded-full uppercase tracking-tighter transition-all duration-300 hover:scale-110 hover:shadow-[0_20px_50px_rgba(74,44,29,0.3)] active:scale-95">
+                COMMISSION ME!
+            </a>
+        </div>
+    </div>
+</section>
+
+<script>
+    const commObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.querySelectorAll('.slide-curtain-left, .slide-curtain-right').forEach(el => {
+                    el.classList.add('show');
+                });
+                entry.target.querySelector('.scale-up-center').classList.add('show');
+            }
+        });
+    }, { threshold: 0.3 });
+
+    commObserver.observe(document.querySelector('section.relative.min-h-screen'));
+</script>
+
+<footer class="p-6 md:p-10 mb-10 mt-10">
+    <div class="relative overflow-hidden bg-black text-white rounded-[2rem] border border-gray-800 p-12 md:p-16 min-h-[70vh] flex flex-col md:flex-row justify-between items-start">
+        
+        <div class="absolute inset-0 z-0 opacity-50 filter brightness-[0.3]">
+            <img src="Chilling.jpg" alt="Chilling Background" 
+                 class="w-full h-full object-cover" 
+                 style="animation: slowPan 20s infinite alternate ease-in-out;">
+        </div>
+
+        <div class="absolute inset-0 bg-blue-950/20 z-0"></div>
+
+        <div class="relative z-10 w-full flex flex-col md:flex-row justify-between h-full gap-12">
+            
+            <div class="flex flex-col gap-2 reveal-footer">
+                <h1 class="text-7xl md:text-8xl font-black mb-4 tracking-tighter">POPROU</h1>
+                <p class="text-sm md:text-base text-gray-300 font-medium max-w-sm">
+                    San Felix, Santo Tomas, Batangas
+                </p>
+				<p class="text-sm md:text-base text-gray-300 font-medium max-w-sm">
+                    poprou1122@gmail.com
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-16 md:gap-24 text-right md:text-left self-start">
+                
+                <div class="space-y-4 reveal-footer" style="transition-delay: 0.2s;">
+                    <h4 class="font-bold text-lg mb-6 uppercase tracking-widest text-gray-400">Index</h4>
+                    <ul class="space-y-3 text-base md:text-lg text-white font-semibold">
+                        <li><a href="index.html" class="hover:text-gray-400 transition-colors">Home</a></li>
+                        <li><a href="about.html" class="hover:text-gray-400 transition-colors">About Me</a></li>
+                        <li><a href="portfolio.html" class="hover:text-gray-400 transition-colors">Portfolio</a></li>
+                        <li><a href="services.html" class="hover:text-gray-400 transition-colors">Services</a></li>
+                        <li><a href="contact.html" class="hover:text-gray-400 transition-colors">Contact</a></li>
+						<li><a href="https://mail.google.com/mail/?view=cm&fs=1&to=poprou1122@gmail.com" target="_blank" class="hover:text-gray-400 flex items-center gap-1.5 group justify-end md:justify-start transition-all">Commission <span class="text-gray-500 group-hover:text-gray-400 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform text-sm">↗</span></a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-4 reveal-footer" style="transition-delay: 0.4s;">
+                    <h4 class="font-bold text-lg mb-6 uppercase tracking-widest text-gray-400">Socials</h4>
+                    <ul class="space-y-3 text-base md:text-lg text-white font-semibold">
+                        <li>
+                            <a href="https://www.instagram.com/poprou1/" target="_blank" class="hover:text-gray-400 flex items-center gap-1.5 group justify-end md:justify-start transition-all">
+                                Instagram 
+                                <span class="text-gray-500 group-hover:text-gray-400 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform text-sm">↗</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://x.com/Poprou2" target="_blank" class="hover:text-gray-400 flex items-center gap-1.5 group justify-end md:justify-start transition-all">
+                                Twitter 
+                                <span class="text-gray-500 group-hover:text-gray-400 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform text-sm">↗</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.behance.net/poprou" target="_blank" class="hover:text-gray-400 flex items-center gap-1.5 group justify-end md:justify-start transition-all">
+                                Behance 
+                                <span class="text-gray-500 group-hover:text-gray-400 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform text-sm">↗</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const footerObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.querySelectorAll('.reveal-footer').forEach(el => el.classList.add('show'));
+            }
+        });
+    }, { threshold: 0.2 });
+
+    footerObserver.observe(document.querySelector('footer'));
+</script>
+
+<button id="sound-toggle" class="fixed bottom-8 right-8 z-[60] bg-[#4a2c1d] p-3 rounded-full shadow-lg hover:scale-110 transition-all group" title="Toggle Sound">
+    <svg id="icon-sound-on" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+    </svg>
+    <svg id="icon-sound-off" class="hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <line x1="23" y1="9" x2="17" y2="15"></line>
+        <line x1="17" y1="9" x2="23" y2="15"></line>
+    </svg>
+</button>
+
+<script>
+    let soundEnabled = true;
+    const soundBtn = document.getElementById('sound-toggle');
+    const iconOn = document.getElementById('icon-sound-on');
+    const iconOff = document.getElementById('icon-sound-off');
+
+	soundBtn.addEventListener('click', () => {
+		soundEnabled = !soundEnabled;
+		
+		if (soundEnabled) {
+			iconOn.classList.remove('hidden');
+			iconOff.classList.add('hidden');
+			soundBtn.classList.remove('muted');
+			if (window._audioCtx) window._audioCtx.resume();
+		} else {
+			iconOn.classList.add('hidden');
+			iconOff.classList.remove('hidden');
+			soundBtn.classList.add('muted');
+			
+			unlockAchievement('silence_golden'); 
+		}
+	});
+
+    function createCtx() { 
+        if (!window._audioCtx) {
+            window._audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (window._audioCtx.state === 'suspended') {
+            window._audioCtx.resume();
+        }
+        return window._audioCtx; 
+    }
+
+    function playTone(freq, type, duration, gain = 0.06, fadeIn = 0.01) {
+        if (!soundEnabled) return;
+        try {
+            const ctx = createCtx(); 
+            const osc = ctx.createOscillator(); 
+            const gn = ctx.createGain();
+            osc.connect(gn); 
+            gn.connect(ctx.destination); 
+            osc.type = type; 
+            osc.frequency.setValueAtTime(freq, ctx.currentTime);
+            gn.gain.setValueAtTime(0, ctx.currentTime); 
+            gn.gain.linearRampToValueAtTime(gain, ctx.currentTime + fadeIn);
+            gn.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration); 
+            osc.start(ctx.currentTime); 
+            osc.stop(ctx.currentTime + duration + 0.05);
+        } catch(e) {}
+    }
+
+    function playHoverSound() { playTone(660, 'sine', 0.12, 0.04); }
+    function playClickSound() { 
+        playTone(440, 'sine', 0.18, 0.07); 
+        playTone(660, 'sine', 0.14, 0.04); 
+    }
+
+    document.querySelectorAll('a, button:not(#sound-toggle)').forEach(el => { 
+        el.addEventListener('mouseenter', playHoverSound); 
+        el.addEventListener('click', playClickSound); 
+    });
+
+    const originalCharacterSpeak = typeof characterSpeak !== 'undefined' ? characterSpeak : null;
+    if (originalCharacterSpeak) {
+        characterSpeak = function() {
+			unlockAchievement('first_talk');
+            if (canSpeak && soundEnabled) {
+                [440, 550, 660].forEach((f, i) => 
+                    setTimeout(() => playTone(f, 'sine', 0.1, 0.05), i * 55)
+                );
+            }
+            originalCharacterSpeak();
+        };
+    }
+</script>
+
+<script>
+	const achievements = {
+		'first_talk': { title: 'Hello There!', desc: 'You spoke to Poprou!' },
+		'art_collector': { title: 'Art Collector', desc: 'You viewed your first artwork!' },
+		'completionist': { title: 'The Completionist', desc: 'You viewed every piece in the gallery!' },
+		'silence_golden': { title: 'Silence is Golden', desc: 'You found the mute button!' },
+		'grand_tour': { title: 'The Grand Tour', desc: 'You visited every page on the site!' }
+	};
+
+	function unlockAchievement(id) {
+		if (localStorage.getItem('ach_' + id)) return;
+
+		localStorage.setItem('ach_' + id, 'unlocked');
+
+		showAchievementPopup(achievements[id]);
+		
+		if (typeof playTone === "function") {
+			playTone(880, 'sine', 0.4, 0.1);
+		}
+	}
+
+	function showAchievementPopup(data, isProgress = false) {
+		const popup = document.createElement('div');
+		popup.className = 'fixed bottom-24 right-8 z-[100] bg-[#4a2c1d] text-white p-4 rounded-2xl shadow-2xl flex items-center gap-4 animate-bounce-in';
+		
+		popup.innerHTML = `
+			<div class="bg-white/20 p-2 rounded-lg text-xl">${isProgress ? '📍' : '🏆'}</div>
+			<div class="min-w-[150px]">
+				<h4 class="font-bold text-sm uppercase tracking-tighter">${data.title}</h4>
+				<p class="text-xs opacity-80">${data.desc}</p>
+				${isProgress ? `
+					<div class="w-full bg-white/20 h-1.5 mt-2 rounded-full overflow-hidden">
+						<div class="bg-white h-full transition-all duration-500" style="width: ${data.percent}%"></div>
+					</div>
+				` : ''}
+			</div>
+		`;
+		
+		document.body.appendChild(popup);
+
+		setTimeout(() => {
+			popup.style.opacity = '0';
+			popup.style.transform = 'translateY(20px)';
+			popup.style.transition = 'all 0.5s ease';
+			setTimeout(() => popup.remove(), 500);
+		}, 4000);
+	}
+	
+	function trackPageVisit() {
+		const path = window.location.pathname;
+		const page = path.split("/").pop() || "index.html";
+		const requiredPages = ["index.html", "about.html", "portfolio.html", "services.html", "contact.html"];
+		
+		if (requiredPages.includes(page)) {
+			let visited = JSON.parse(localStorage.getItem('visited_pages') || '[]');
+			
+			if (!visited.includes(page)) {
+				visited.push(page);
+				localStorage.setItem('visited_pages', JSON.stringify(visited));
+				
+				const total = requiredPages.length;
+				const currentCount = visited.length;
+				const percentage = (currentCount / total) * 100;
+
+				if (currentCount < total) {
+					showAchievementPopup({
+						title: 'The Grand Tour',
+						desc: `Visited ${currentCount} of ${total} pages`,
+						percent: percentage
+					}, true);
+				} else {
+					unlockAchievement('grand_tour');
+				}
+			}
+		}
+	}
+
+	document.addEventListener('DOMContentLoaded', trackPageVisit);
+</script>
+
+</body>
+</html>

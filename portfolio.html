@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="icon" type="image/x-icon" href="Goat!.jpg">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | POPROU</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #ffffff; color: #000000; font-family: 'Inter', sans-serif; }
+        .bento-card { background-color: #000000; color: #ffffff; border-radius: 2rem; padding: 2.5rem; display: flex; flex-direction: column; justify-content: center; transition: transform 0.2s ease; }
+        .bento-card:hover { transform: translateY(-5px); }
+		
+		@keyframes portfolioZoom {
+			from { transform: scale(1.1); }
+			to { transform: scale(1); }
+		}
+
+		.reveal-portfolio {
+			opacity: 0;
+			transform: translateY(30px);
+			transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+		}
+
+		.reveal-portfolio.show {
+			opacity: 1;
+			transform: translateY(0);
+		}
+		
+		.reveal-card {
+			opacity: 0;
+			transform: translateY(30px);
+			transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+		}
+
+		.reveal-card.show {
+			opacity: 1;
+			transform: translateY(0);
+		}
+
+		.group:hover img {
+			transform: scale(1.05);
+			transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+		}
+
+		#artworkModal.flex {
+			animation: fadeIn 0.3s ease-out;
+		}
+
+		#modalImage {
+			transform: scale(0.9);
+			transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+		}
+
+		#artworkModal:not(.hidden) #modalImage {
+			transform: scale(1);
+		}
+
+		@keyframes fadeIn {
+			from { opacity: 0; }
+			to { opacity: 1; }
+		}
+		
+		@keyframes slowPan {
+			from { transform: scale(1.0) translateX(0); }
+			to { transform: scale(1.1) translateX(-20px); }
+		}
+
+		.reveal-footer {
+			opacity: 0;
+			transform: translateY(30px);
+			transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+		}
+
+		.reveal-footer.show {
+			opacity: 1;
+			transform: translateY(0);
+		}
+		
+		body.transitioning {
+			overflow: hidden;
+		}
+
+		#page-transition.is-active {
+			transform: translateY(0);
+		}
+
+		#page-transition.is-hidden {
+			transform: translateY(-100%);
+		}	
+
+		#sound-toggle.muted {
+			opacity: 0.5;
+			background-color: #4a2c1d; 
+		}
+
+		#sound-toggle.muted svg {
+			stroke: #ffffff;
+		}
+		
+		@keyframes bounceIn {
+			0% { transform: translateY(100px); opacity: 0; }
+			60% { transform: translateY(-10px); opacity: 1; }
+			100% { transform: translateY(0); }
+		}
+
+		.animate-bounce-in {
+			animation: bounceIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+		}
+    </style>
+</head>
+
+<div id="page-transition" class="fixed inset-0 z-[100] bg-[#4a2c1d] transition-transform duration-700 ease-in-out translate-y-0">
+    <div class="flex items-center justify-center h-full">
+        <h2 class="text-white text-2xl font-black tracking-tighter uppercase">Poprou</h2>
+    </div>
+</div>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const transitionEl = document.getElementById('page-transition');
+        
+        setTimeout(() => {
+            transitionEl.classList.add('is-hidden');
+        }, 100);
+
+        const links = document.querySelectorAll('a');
+        links.forEach(link => {
+            if (link.hostname === window.location.hostname && !link.hash && link.target !== "_blank") {
+                link.addEventListener('click', e => {
+                    e.preventDefault();
+                    let target = link.href;
+
+                    transitionEl.classList.remove('is-hidden');
+                    
+                    setTimeout(() => {
+                        window.location.href = target;
+                    }, 700);
+                });
+            }
+        });
+    });
+</script>
+
+<body class="overflow-x-hidden">
+
+	<nav class="flex justify-between items-center px-10 py-6 sticky top-0 bg-white/90 backdrop-blur-md z-50 border-b border-gray-100">
+		
+		<a href="index.html" class="group">
+			<div class="text-2xl font-black tracking-tighter leading-none transition-all group-hover:opacity-60">
+				POP<br>ROU
+			</div>
+		</a>
+
+		<div class="hidden md:flex space-x-8 font-medium text-sm uppercase tracking-widest">
+			<a href="index.html" class="hover:text-gray-500 transition-all text-black">Home</a>
+			<a href="about.html" class="hover:text-gray-500 transition-all text-black">About Me</a>
+			<a href="portfolio.html" class="border-b-2 border-black pb-1 text-black">Portfolio</a>
+			<a href="services.html" class="hover:text-gray-500 transition-all text-black">Services</a>
+			<a href="contact.html" class="hover:text-gray-500 transition-all text-black">Contact</a>
+		</div>
+
+		<a href="https://mail.google.com/mail/?view=cm&fs=1&to=poprou1122@gmail.com" 
+		   target="_blank"
+		   class="bg-[#4a2c1d] text-white px-6 py-2 rounded-full font-bold uppercase tracking-widest text-xs hover:bg-[#5d3a28] transition-colors">
+			Commission Me!
+		</a>
+	</nav>
+	
+<section class="relative h-[40vh] md:h-[50vh] w-full overflow-hidden">
+    <div class="absolute inset-0 bg-cover bg-bottom" 
+         style="background-image: url('Portfolio BG.jpg'); animation: portfolioZoom 2s ease-out forwards;">
+    </div>
+</section>
+
+<section class="relative bg-white px-10 md:px-20 pt-12 pb-16">
+    <div class="max-w-7xl mx-auto">
+        <h1 class="reveal-portfolio text-7xl md:text-8xl font-black tracking-tighter text-[#4a2c1d] mb-2 leading-none uppercase" 
+            style="transition-delay: 0.1s;">
+            PORTFOLIO
+        </h1>
+        <p class="reveal-portfolio text-xl md:text-2xl text-[#4a2c1d] font-medium opacity-80" 
+           style="transition-delay: 0.3s;">
+            A collection of my works
+        </p>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            document.querySelectorAll('.reveal-portfolio').forEach(el => {
+                el.classList.add('show');
+            });
+        }, 150);
+    });
+</script>
+	
+<section class="px-10 md:px-20">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:h-[800px]">
+            <div class="flex flex-col gap-4 h-full">
+                <div class="reveal-card relative group overflow-hidden rounded-sm cursor-pointer flex-1" onclick="openModal('Running.png', 'Running with You')">
+                    <img src="Running.jpg" alt="Artwork" class="w-full h-full object-cover transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 ease-out flex items-end p-6">
+                        <h3 class="text-white text-xl font-bold tracking-tight">Running with You</h3>
+                    </div>
+                </div>
+                <div class="reveal-card relative group overflow-hidden rounded-sm cursor-pointer flex-1" onclick="openModal('Dancin\'!.png', 'Dancin\'!')">
+                    <img src="Dancin'!.jpg" alt="Artwork" class="w-full h-full object-cover transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 ease-out flex items-end p-6">
+                        <h3 class="text-white text-xl font-bold tracking-tight">Dancin'!</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reveal-card relative group overflow-hidden rounded-sm cursor-pointer h-full" onclick="openModal('Cleans Only!.png', '&quot;Cleans Only!&quot;')">
+                <img src="Cleans Only!.jpg" alt="Artwork" class="w-full h-full object-cover min-h-[600px] md:min-h-full transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 ease-out flex items-end p-6">
+                    <h3 class="text-white text-xl font-bold tracking-tight">"Cleans Only!"</h3>
+                </div>
+            </div>
+
+            <div class="reveal-card relative group overflow-hidden rounded-sm cursor-pointer h-full" onclick="openModal('Commission for Lavi (Final 2).png', 'Commission for Lavi')">
+                <img src="Commission for Lavi (Final 2).jpg" alt="Artwork" class="w-full h-full object-cover min-h-[600px] md:min-h-full transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 ease-out flex items-end p-6">
+                    <h3 class="text-white text-xl font-bold tracking-tight">Commission for Lavi</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="px-10 md:px-20 mt-4">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 md:h-[800px]">
+            <div class="reveal-card md:col-span-2 relative group overflow-hidden rounded-sm cursor-pointer h-full" onclick="openModal('Lovesick 1.png', 'Lovesick')">
+                <img src="Lovesick 1.jpg" alt="Artwork" class="w-full h-full object-cover transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 ease-out flex items-end p-6">
+                    <h3 class="text-white text-xl font-bold tracking-tight">Lovesick</h3>
+                </div>
+            </div>
+            <div class="reveal-card relative group overflow-hidden rounded-sm cursor-pointer h-full" onclick="openModal('Stuck....png', 'Stuck...')">
+                <img src="Stuck....jpg" alt="Artwork" class="w-full h-full object-cover transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 ease-out flex items-end p-6">
+                    <h3 class="text-white text-xl font-bold tracking-tight">Stuck...</h3>
+                </div>
+            </div>
+            <div class="reveal-card relative group overflow-hidden rounded-sm cursor-pointer h-full" onclick="openModal('ARKS - Valentine\'s Day! 2.png', 'For Valentines Day')">
+                <img src="ARKS - Valentine's Day! 2.jpg" alt="Artwork" class="w-full h-full object-cover transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 ease-out flex items-end p-6">
+                    <h3 class="text-white text-xl font-bold tracking-tight">For Valentines Day</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="px-10 md:px-20 mt-4 pb-20">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 md:h-[800px]">
+            <div class="reveal-card md:col-span-3 relative group overflow-hidden rounded-sm cursor-pointer h-full" onclick="openModal('Chilling 2.png', 'Chilling')">
+                <img src="Chilling 2.jpg" alt="Artwork" class="w-full h-full object-cover transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 ease-out flex items-end p-6">
+                    <h3 class="text-white text-xl font-bold tracking-tight">Chilling</h3>
+                </div>
+            </div>
+
+            <div class="md:col-span-2 flex flex-col gap-4 h-full">
+                <div class="grid grid-cols-2 gap-4 flex-1">
+                    <div class="reveal-card relative group overflow-hidden rounded-sm cursor-pointer h-full" onclick="openModal('Sarangay Things!.png', 'The Sarangay\'s Rage')">
+                        <img src="Sarangay Things!.jpg" alt="Artwork" class="w-full h-full object-cover transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 ease-out flex items-end p-4">
+                            <h3 class="text-white text-lg font-bold tracking-tight">The Sarangay's Rage</h3>
+                        </div>
+                    </div>
+                    <div class="reveal-card relative group overflow-hidden rounded-sm cursor-pointer h-full" onclick="openModal('Ignited Fire!.png', 'Ignited Fire')">
+                        <img src="Ignited Fire!.jpg" alt="Artwork" class="w-full h-full object-cover transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 ease-out flex items-end p-4">
+                            <h3 class="text-white text-lg font-bold tracking-tight">Ignited Fire</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal-card relative group overflow-hidden rounded-sm cursor-pointer flex-1" onclick="openModal('Thana - Isometric View (Y2K).png', 'Thana, the Manananggal Fashionista')">
+                    <img src="Thana - Isometric View (Y2K).jpg" alt="Artwork" class="w-full h-full object-cover transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 ease-out flex items-end p-6">
+                        <h3 class="text-white text-xl font-bold tracking-tight">Thana, the Manananggal Fashionista</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+	<div id="artworkModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 md:p-10 transition-all duration-300">
+
+		<div class="absolute inset-0 bg-black/95 backdrop-blur-md" onclick="closeModal()"></div>
+		
+		<div class="relative max-w-6xl w-full max-h-full flex flex-col items-center">
+
+			<button onclick="closeModal()" class="absolute -top-14 md:-top-10 right-0 text-white text-5xl font-light hover:text-gray-400 transition-colors">&times;</button>
+			
+			<div class="w-full flex justify-center">
+				<img id="modalImage" src="" alt="Full View" class="max-w-full max-h-[75vh] object-contain rounded-sm shadow-2xl">
+			</div>
+			
+			<h2 id="modalTitle" class="text-white text-2xl md:text-5xl font-black mt-8 tracking-tighter uppercase text-center"></h2>
+			
+			<p class="text-gray-500 text-[10px] tracking-widest uppercase mt-4">Click anywhere outside or press ESC to close</p>
+		</div>
+	</div>
+
+<script>
+    const galleryObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal-card').forEach(card => {
+        galleryObserver.observe(card);
+    });
+
+    function openModal(imgSrc, title) {
+        const modal = document.getElementById('artworkModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalTitle = document.getElementById('modalTitle');
+
+        modalImg.src = imgSrc;
+        modalTitle.innerText = title;
+
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('artworkModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.style.overflow = 'auto';
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape") closeModal();
+    });
+</script>
+	
+<footer class="p-6 md:p-10 mb-10 mt-10">
+    <div class="relative overflow-hidden bg-black text-white rounded-[2rem] border border-gray-800 p-12 md:p-16 min-h-[70vh] flex flex-col md:flex-row justify-between items-start">
+        
+        <div class="absolute inset-0 z-0 opacity-50 filter brightness-[0.3]">
+            <img src="Chilling.jpg" alt="Chilling Background" 
+                 class="w-full h-full object-cover" 
+                 style="animation: slowPan 20s infinite alternate ease-in-out;">
+        </div>
+
+        <div class="absolute inset-0 bg-blue-950/20 z-0"></div>
+
+        <div class="relative z-10 w-full flex flex-col md:flex-row justify-between h-full gap-12">
+            
+            <div class="flex flex-col gap-2 reveal-footer">
+                <h1 class="text-7xl md:text-8xl font-black mb-4 tracking-tighter">POPROU</h1>
+                <p class="text-sm md:text-base text-gray-300 font-medium max-w-sm">
+                    San Felix, Santo Tomas, Batangas
+                </p>
+				<p class="text-sm md:text-base text-gray-300 font-medium max-w-sm">
+                    poprou1122@gmail.com
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-16 md:gap-24 text-right md:text-left self-start">
+                
+                <div class="space-y-4 reveal-footer" style="transition-delay: 0.2s;">
+                    <h4 class="font-bold text-lg mb-6 uppercase tracking-widest text-gray-400">Index</h4>
+                    <ul class="space-y-3 text-base md:text-lg text-white font-semibold">
+                        <li><a href="index.html" class="hover:text-gray-400 transition-colors">Home</a></li>
+                        <li><a href="about.html" class="hover:text-gray-400 transition-colors">About Me</a></li>
+                        <li><a href="portfolio.html" class="hover:text-gray-400 transition-colors">Portfolio</a></li>
+                        <li><a href="services.html" class="hover:text-gray-400 transition-colors">Services</a></li>
+                        <li><a href="contact.html" class="hover:text-gray-400 transition-colors">Contact</a></li>
+						<li><a href="https://mail.google.com/mail/?view=cm&fs=1&to=poprou1122@gmail.com" target="_blank" class="hover:text-gray-400 flex items-center gap-1.5 group justify-end md:justify-start transition-all">Commission <span class="text-gray-500 group-hover:text-gray-400 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform text-sm">↗</span></a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-4 reveal-footer" style="transition-delay: 0.4s;">
+                    <h4 class="font-bold text-lg mb-6 uppercase tracking-widest text-gray-400">Socials</h4>
+                    <ul class="space-y-3 text-base md:text-lg text-white font-semibold">
+                        <li>
+                            <a href="https://www.instagram.com/poprou1/" target="_blank" class="hover:text-gray-400 flex items-center gap-1.5 group justify-end md:justify-start transition-all">
+                                Instagram 
+                                <span class="text-gray-500 group-hover:text-gray-400 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform text-sm">↗</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://x.com/Poprou2" target="_blank" class="hover:text-gray-400 flex items-center gap-1.5 group justify-end md:justify-start transition-all">
+                                Twitter 
+                                <span class="text-gray-500 group-hover:text-gray-400 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform text-sm">↗</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.behance.net/poprou" target="_blank" class="hover:text-gray-400 flex items-center gap-1.5 group justify-end md:justify-start transition-all">
+                                Behance 
+                                <span class="text-gray-500 group-hover:text-gray-400 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform text-sm">↗</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const footerObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.querySelectorAll('.reveal-footer').forEach(el => el.classList.add('show'));
+            }
+        });
+    }, { threshold: 0.2 });
+
+    footerObserver.observe(document.querySelector('footer'));
+</script>
+
+<button id="sound-toggle" class="fixed bottom-8 right-8 z-[60] bg-[#4a2c1d] p-3 rounded-full shadow-lg hover:scale-110 transition-all group" title="Toggle Sound">
+    <svg id="icon-sound-on" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+    </svg>
+    <svg id="icon-sound-off" class="hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <line x1="23" y1="9" x2="17" y2="15"></line>
+        <line x1="17" y1="9" x2="23" y2="15"></line>
+    </svg>
+</button>
+
+<script>
+    let soundEnabled = true;
+    const achievements = {
+        'first_talk': { title: 'Hello There!', desc: 'You spoke to Poprou!' },
+        'art_collector': { title: 'A Closer Look', desc: 'You viewed your first artwork!' },
+        'completionist': { title: 'The Art Collector', desc: 'You viewed every piece in the gallery!' },
+        'silence_golden': { title: 'Silence is Golden', desc: 'You found the mute button!' },
+        'grand_tour': { title: 'The Grand Tour', desc: 'You visited every page on the site!' },
+        'deep_dive': { title: 'A Deep Dive', desc: 'You spent 30 seconds admiring an artwork!' }
+    };
+
+    function createCtx() { 
+        if (!window._audioCtx) window._audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (window._audioCtx.state === 'suspended') window._audioCtx.resume();
+        return window._audioCtx; 
+    }
+
+    function playTone(freq, type, duration, gain = 0.06, fadeIn = 0.01) {
+        if (!soundEnabled) return;
+        try {
+            const ctx = createCtx(); 
+            const osc = ctx.createOscillator(); 
+            const gn = ctx.createGain();
+            osc.connect(gn); gn.connect(ctx.destination); 
+            osc.type = type; 
+            osc.frequency.setValueAtTime(freq, ctx.currentTime);
+            gn.gain.setValueAtTime(0, ctx.currentTime); 
+            gn.gain.linearRampToValueAtTime(gain, ctx.currentTime + fadeIn);
+            gn.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration); 
+            osc.start(ctx.currentTime); 
+            osc.stop(ctx.currentTime + duration + 0.05);
+        } catch(e) {}
+    }
+
+    function playHoverSound() { playTone(660, 'sine', 0.12, 0.04); }
+    function playClickSound() { 
+        playTone(440, 'sine', 0.18, 0.07); 
+        playTone(660, 'sine', 0.14, 0.04); 
+    }
+
+    let achievementQueue = [];
+    let isShowingPopup = false;
+    let deepDiveTimer; 
+
+    function unlockAchievement(id) {
+        if (localStorage.getItem('ach_' + id)) return;
+        localStorage.setItem('ach_' + id, 'unlocked');
+        achievementQueue.push({ data: achievements[id], isProgress: false });
+        processQueue();
+        playTone(880, 'sine', 0.4, 0.1); 
+    }
+
+    function processQueue() {
+        if (isShowingPopup || achievementQueue.length === 0) return;
+        isShowingPopup = true;
+        const next = achievementQueue.shift();
+        showAchievementPopup(next.data, next.isProgress);
+    }
+
+    function showAchievementPopup(data, isProgress = false) {
+        const popup = document.createElement('div');
+        popup.className = 'achievement-popup fixed bottom-24 right-8 z-[100] bg-[#4a2c1d] text-white p-4 rounded-2xl shadow-2xl flex items-center gap-4 animate-bounce-in';
+        popup.innerHTML = `
+            <div class="bg-white/20 p-2 rounded-lg text-xl">${isProgress ? '📍' : '🏆'}</div>
+            <div class="min-w-[150px]">
+                <h4 class="font-bold text-sm uppercase tracking-tighter">${data.title}</h4>
+                <p class="text-xs opacity-80">${data.desc}</p>
+                ${isProgress ? `
+                    <div class="w-full bg-white/20 h-1.5 mt-2 rounded-full overflow-hidden">
+                        <div class="bg-white h-full transition-all duration-500" style="width: ${data.percent}%"></div>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+        document.body.appendChild(popup);
+        setTimeout(() => {
+            popup.style.opacity = '0';
+            popup.style.transform = 'translateY(20px)';
+            popup.style.transition = 'all 0.5s ease';
+            setTimeout(() => {
+                popup.remove();
+                isShowingPopup = false;
+                processQueue();
+            }, 500);
+        }, 4000);
+    }
+
+    function openModal(imgSrc, title) {
+        const modal = document.getElementById('artworkModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalTitle = document.getElementById('modalTitle');
+
+        modalImg.src = imgSrc;
+        modalTitle.innerText = title;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+
+        clearTimeout(deepDiveTimer);
+        deepDiveTimer = setTimeout(() => unlockAchievement('deep_dive'), 30000);
+
+        unlockAchievement('art_collector');
+        trackArtworkView(imgSrc);
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('artworkModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.style.overflow = 'auto';
+        clearTimeout(deepDiveTimer);
+    }
+
+    function trackArtworkView(imgSrc) {
+        let viewedArt = JSON.parse(localStorage.getItem('viewed_artworks') || '[]');
+        if (!viewedArt.includes(imgSrc)) {
+            viewedArt.push(imgSrc);
+            localStorage.setItem('viewed_artworks', JSON.stringify(viewedArt));
+            
+            const total = document.querySelectorAll('.reveal-card').length;
+            if (viewedArt.length < total) {
+                achievementQueue.push({
+                    data: { title: 'Gallery Progress', desc: `Discovered ${viewedArt.length} of ${total} artworks`, percent: (viewedArt.length / total) * 100 },
+                    isProgress: true
+                });
+                processQueue();
+            } else {
+                unlockAchievement('completionist');
+            }
+        }
+    }
+
+    function trackPageVisit() {
+        const page = window.location.pathname.split("/").pop() || "index.html";
+        const requiredPages = ["index.html", "about.html", "portfolio.html", "services.html", "contact.html"];
+        
+        if (requiredPages.includes(page)) {
+            let visited = JSON.parse(localStorage.getItem('visited_pages') || '[]');
+            if (!visited.includes(page)) {
+                visited.push(page);
+                localStorage.setItem('visited_pages', JSON.stringify(visited));
+                const total = requiredPages.length;
+                if (visited.length < total) {
+                    achievementQueue.push({
+                        data: { title: 'The Grand Tour', desc: `Visited ${visited.length} of ${total} pages`, percent: (visited.length / total) * 100 },
+                        isProgress: true
+                    });
+                    processQueue();
+                } else {
+                    unlockAchievement('grand_tour');
+                }
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        trackPageVisit();
+
+        document.querySelectorAll('.reveal-card').forEach(el => {
+            el.addEventListener('mouseenter', playHoverSound);
+        });
+
+        document.querySelectorAll('a, button:not(#sound-toggle)').forEach(el => {
+            el.addEventListener('mouseenter', playHoverSound);
+            el.addEventListener('click', playClickSound);
+        });
+
+        document.addEventListener('keydown', (e) => { 
+            if (e.key === "Escape") closeModal(); 
+        });
+
+        const soundBtn = document.getElementById('sound-toggle');
+        if (soundBtn) {
+            soundBtn.addEventListener('click', () => {
+                soundEnabled = !soundEnabled;
+                document.getElementById('icon-sound-on').classList.toggle('hidden', !soundEnabled);
+                document.getElementById('icon-sound-off').classList.toggle('hidden', soundEnabled);
+                soundBtn.classList.toggle('muted', !soundEnabled);
+                
+                if (soundEnabled) {
+                    createCtx(); 
+                } else {
+                    unlockAchievement('silence_golden');
+                }
+            });
+        }
+    });
+</script>
+	
+</body>
+
+</html>
